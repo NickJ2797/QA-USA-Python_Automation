@@ -1,6 +1,10 @@
+import time
+import data
+import helpers
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 from pages import UrbanRoutesPage
+
 
 
 
@@ -12,56 +16,87 @@ class TestUrbanRoutes:
         capabilities = DesiredCapabilities.CHROME
         capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
         cls.driver = webdriver.Chrome()
+        cls.driver.maximize_window()
+        time.sleep(1)
+        cls.driver.get(data.Urban_ROUTES_URL)
         if helpers.is_url_reachable(data.Urban_ROUTES_URL):
             print("Connected to the Urban Routes server")
         else:
             print("Cannot connect to Urban Routes. Check the server is on and still running")
 
     def test_set_route(self):
-        # Add in S8
-        print("Function created for set route")
-        pass
+        urban_routes_page = UrbanRoutesPage(self.driver)
+        urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
+
+        assert urban_routes_page.get_from() == data.ADDRESS_FROM
+        assert urban_routes_page.get_to() == data.ADDRESS_TO
 
     def test_select_plan(self):
-        # Add in S8
-        print("Function created for select plan")
-        pass
+        urban_routes_page = UrbanRoutesPage(self.driver)
+        urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
+        urban_routes_page.call_taxi()
+        urban_routes_page.select_supportive_plan()
+
+
 
     def test_fill_phone_number(self):
-        # Add in S8
-        print("Function created for fill phone number")
-        pass
+        urban_routes_page = UrbanRoutesPage(self.driver)
+        urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
+        urban_routes_page.call_taxi()
+        urban_routes_page.select_supportive_plan()
+        urban_routes_page.fill_phone_number()
+        assert urban_routes_page.get_phone() == data.PHONE_NUMBER
+
+
 
     def test_fill_card(self):
-        # Add in S8
-        print("Function created for fill card")
-        pass
+        urban_routes_page = UrbanRoutesPage(self.driver)
+        urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
+        urban_routes_page.call_taxi()
+        urban_routes_page.select_supportive_plan()
+        urban_routes_page.fill_card(data.CARD_NUMBER,data.CARD_CODE)
+
+        assert urban_routes_page.get_card_number() == data.CARD_NUMBER
+        assert urban_routes_page.get_card_code() == data.CARD_CODE
+
+
 
     def test_comment_for_driver(self):
-        # Add in S8
-        print("Function created for comment for driver")
-        pass
+        urban_routes_page = UrbanRoutesPage(self.driver)
+        urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
+        urban_routes_page.call_taxi()
+        urban_routes_page.select_supportive_plan()
+        urban_routes_page.comment_for_driver(data.MESSAGE_FOR_DRIVER)
+
+        assert urban_routes_page.get_comment() == data.MESSAGE_FOR_DRIVER
+
 
     def test_order_blanket_and_handkerchiefs(self):
-        # Add in S8
-        print("Function created for order blanket and handkerchiefs")
-        pass
+        urban_routes_page = UrbanRoutesPage(self.driver)
+        urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
+        urban_routes_page.call_taxi()
+        urban_routes_page.select_supportive_plan()
+        urban_routes_page.order_blanket_and_handkerchiefs()
+        assert urban_routes_page.is_switch_on() == True, "Switch was not toggled on"
+
+
 
     def test_order_2_ice_creams(self):
-        # Test ordering two ice creams using the Urban Routes app.
-        for _ in range(2):
-            # Add in S8
-            print("Function created for order 2 ice creams")
-            pass
+        urban_routes_page = UrbanRoutesPage(self.driver)
+        urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
+        urban_routes_page.call_taxi()
+        urban_routes_page.select_supportive_plan()
+        urban_routes_page.order_2_ice_creams()
+
 
     def test_car_search_model_appears(self):
-        # Add in S8
-        print("Function created for car search model appears")
-        pass
+        urban_routes_page = UrbanRoutesPage(self.driver)
+        urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
+        urban_routes_page.call_taxi()
+        urban_routes_page.select_supportive_plan()
+        urban_routes_page.comment_for_driver(data.MESSAGE_FOR_DRIVER)
+        urban_routes_page.order_taxi_with_supportive_tariff()
 
     @classmethod
     def teardown_class(cls):
         cls.driver.quit()
-import data
-import helpers
-
