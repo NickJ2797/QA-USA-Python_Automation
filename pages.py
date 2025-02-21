@@ -125,7 +125,7 @@ class UrbanRoutesPage:
 
     def order_blanket_and_handkerchiefs(self):
         switches = self.driver.find_elements(*self.option_switches)
-        switch_assert = self.driver.find_elements(*self.option_switches_assert)
+        self.driver.find_elements(*self.option_switches_assert)
         time.sleep(3)
         switches[0].click()
     def is_switch_on(self):
