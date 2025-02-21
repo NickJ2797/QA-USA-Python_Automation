@@ -24,7 +24,8 @@ class TestUrbanRoutes:
     def test_set_route(self):
       urban_routes_page = UrbanRoutesPage(self.driver)
       urban_routes_page.enter_route(data.ADDRESS_FROM,data.ADDRESS_TO)
-
+      assert urban_routes_page.get_from() == data.ADDRESS_FROM
+      assert urban_routes_page.get_to() == data.ADDRESS_TO
 
 
 
@@ -34,8 +35,6 @@ class TestUrbanRoutes:
         urban_routes_page.enter_route(data.ADDRESS_FROM, data.ADDRESS_TO)
         urban_routes_page.call_taxi()
         urban_routes_page.select_supportive_plan()
-        assert urban_routes_page.get_from() == data.ADDRESS_FROM
-        assert urban_routes_page.get_from() == data.ADDRESS_TO
 
 
     def test_fill_phone_number(self):
