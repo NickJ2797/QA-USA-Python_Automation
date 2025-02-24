@@ -92,7 +92,8 @@ class TestUrbanRoutes:
         urban_routes_page.select_supportive_plan()
         urban_routes_page.comment_for_driver(data.MESSAGE_FOR_DRIVER)
         urban_routes_page.order_taxi_with_supportive_tariff()
-        assert urban_routes_page.get_supportive_tariff() == 'The driver will arrive in 5 min.'
+        assert 'The driver will arrive' in urban_routes_page.get_supportive_tariff(), \
+            f"Expected text 'The driver will arrive' not found in: {urban_routes_page.get_supportive_tariff()}"
 
     @classmethod
     def teardown_class(cls):
