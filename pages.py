@@ -1,6 +1,4 @@
 from selenium.webdriver.common.by import By
-
-import data
 import helpers
 import time
 
@@ -46,11 +44,13 @@ class UrbanRoutesPage:
         #blanket
 
         # ice cream
-        self.ice_cream_option_locator = (By.XPATH, '//div[@class="r-counter-label" and contains(text(), "Ice cream")]')
-
+        self.ice_cream_option_locator = (By.XPATH, '(//div[@class="counter-plus"])[1]')
+        self.select_ice_cream =(By.XPATH, '(//div[@class="counter-value"])[1]')
         # order supportive car
+        self.selected_plan_locator = (By.XPATH, '//div[@class="tcard active"]//div[@class="tcard-title"]')
         self.supportive_plan_locator = (By.XPATH, '//div[contains(text(), "Supportive")]//..')
         self.order_button_locator = (By.CLASS_NAME, 'smart-button-wrapper')
+        self.order_confirmation = (By.XPATH, '//div[@class="order-header-title"]')
 
     def enter_from_route(self, from_text):
         # Enter From
@@ -76,15 +76,17 @@ class UrbanRoutesPage:
         supportive_plan_button = self.driver.find_element(*self.supportive_plan_locator)
         if not supportive_plan_button.is_selected():
             supportive_plan_button.click()
+    def get_selected_plan(self):
+        return self.driver.find_element(*self.selected_plan_locator).text
 
 
 
-    def fill_phone_number(self):
+    def fill_phone_number(self, phone_number):
         phone_number_input = self.driver.find_element(*self.phone_number_input_locator)
         phone_number_c = self.driver.find_element(*self.phone_number_click)
         phone_number_c.click()
         phone_number_input.clear()  # Clear any pre-filled text
-        phone_number_input.send_keys(data.PHONE_NUMBER)
+        phone_number_input.send_keys(phone_number)
 
         next_button = self.driver.find_element(*self.next_button)
         next_button.click()
@@ -136,11 +138,15 @@ class UrbanRoutesPage:
     def order_2_ice_creams(self):
         for _ in range(2):
            self.driver.find_element(*self.ice_cream_option_locator).click()
+    def get_total_icecreams(self):
+        return self.driver.find_element(*self.select_ice_cream).text
 
 
     def order_taxi_with_supportive_tariff(self):
         self.driver.find_element(*self.order_button_locator).click()
         time.sleep(38)
+    def get_supportive_tariff(self):
+        return self.driver.find_element(*self.order_confirmation).text
 
 
     #Step to enter both "from" and "to" locations
